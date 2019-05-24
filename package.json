@@ -1,0 +1,24 @@
+{
+  "name": "air-conc-aqi-converter",
+  "version": "0.1.0",
+  "description": "Converts to and from air pollutants' concentration values and AQI values",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src -d dist",
+    "test": "npm run build && mocha dist/test/**/*.js || true"
+  },
+  "author": "Herbert Lim",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
+  },
+  "dependencies": {
+    "d3-scale": "^3.0.0",
+    "lodash": "^4.17.11"
+  }
+}
