@@ -2,7 +2,8 @@
   "name": "air-conc-aqi-converter",
   "version": "0.1.0",
   "description": "Converts to and from air pollutants' concentration values and AQI values",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
   "scripts": {
     "build": "babel src -d dist",
     "test-iaqi": "npm run build && mocha dist/test/calcIaqi.test.js || true",

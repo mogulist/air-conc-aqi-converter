@@ -3,6 +3,6 @@ res.json
 /lib/util-MacBook Pro.js
 .DS_Store
 npm-debug.log
-/dist
 /logs
 /semantic
+.vscode
