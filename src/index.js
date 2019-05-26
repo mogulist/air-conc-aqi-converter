@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import d3scale from 'd3-scale';
 
-import {aqiSpecs, misebigAqiSpec,} from './aqiSpecs';
+import {aqiSpecs} from './aqiSpecs';
 
 const pNames = {
     PM25 : 'pm25',
@@ -30,25 +30,28 @@ export const calcImaqi = ({pm25Value, pm10Value, no2Value, o3Value, coValue, so2
 
 
 
-export const concToAqi = (pollutant, conc) => {
+export const concToAqi = (aqiName, pollutant, conc) => {
     let aqi;
-    const level = getConcLevel(pollutant, conc)
+    const level = getConcLevel(aqiName, pollutant, conc)
     if (level == 6) {
-        aqi = concToAqiLast(pollutant, conc)
+        aqi = concToAqiLast(aqiName, pollutant, conc)
         return aqi;
+    } 
+    if (level === -1 || conc < 0) {
+        return -1;
     }
 
     // level is 0~5
-    const bpLow = getAqiLow(pollutant, level)
-    const bpHigh = getAqiHigh(pollutant, level)
-    const cLow = getCLow(pollutant, level)
-    const cHigh = getCHigh(pollutant, level)
+    const bpLow = getAqiLow(aqiName, pollutant, level)
+    const bpHigh = getAqiHigh(aqiName, pollutant, level)
+    const cLow = getCLow(aqiName, pollutant, level)
+    const cHigh = getCHigh(aqiName, pollutant, level)
     
     aqi = bpLow + (conc - cLow)*(bpHigh - bpLow)/(cHigh - cLow)
     return Math.round(aqi,0);
 }
 
-function getPosInLevel (aqi) {
+function getPosInLevel (aqiName, aqi) {
     const hazardousPos = d3scale.scaleLog()
                 .domain([301, 500, 2000])
                 .range([0, 0.4, 0.45])
@@ -58,26 +61,28 @@ function getPosInLevel (aqi) {
     }
 
     const level = getLevelByAqi(aqi)
-    const highValue = misebigAqiSpec.indexBp[level];
-    const lowValue = level > 0 ? misebigAqiSpec.indexBp[level-1] + 1 : 0;
+    const highValue = aqiSpec[aqiName].indexBp[level];
+    const lowValue = level > 0 ? aqiSpec[aqiName].indexBp[level-1] + 1 : 0;
     const pos = (aqi - lowValue)/(highValue - lowValue)
     return pos; 
 }
 
-function getLevelByAqi(aqi) {
-    if (aqi > 400) return 5;
+function getLevelByAqi(aqiName, aqiValue) {
+    if (aqiValue > 400) return 5;
 
     let level;
-    for (level = 0; level < misebigAqiSpec.level; level++) {
-        if (aqi <= misebigAqiSpec.indexBp[level]) break;
+    for (level = 0; level < aqiSpec[aqiName].level; level++) {
+        if (aqiValue <= aqiSpec[aqiName].indexBp[level]) break;
     }
     return level;
 }
 
 // 각 오염원에서 AQI가 401 이상이되는 구간 계산
 // 농도가 무한히 높아지더라도 401~500 구간의 linear rate로 AQI를 계산함
-function concToAqiLast(pollutant, conc) {
-    const {slope, intercept} = aqiSpecs.misebig[pollutant+'Data'];
+function concToAqiLast(aqiName, pollutant, conc) {
+    if (!aqiSpecs[aqiName]) return -1;
+
+    const {slope, intercept} = aqiSpecs[aqiName][pollutant+'Data'];
     const aqi = slope * conc + intercept;
 
     if (Number(aqi)) return Math.round(aqi, 0)
@@ -86,11 +91,19 @@ function concToAqiLast(pollutant, conc) {
 
 // 오염원의 농도가 어느 레벨인지 알려줌
 // Return: Level: 0 ~ 5/6
-function getConcLevel(pollutant, conc) {
+function getConcLevel(aqiName, pollutant, conc) {
     if (!isValidPollutantName(pollutant)) return -1;
+    if (!aqiSpecs[aqiName]) {
+        // console.error(`getConcLevel: invalid AQI name:${aqiName}`)
+        return -1;
+    }
+    if (!aqiSpecs[aqiName][pollutant+'Data']) {
+        // console.error(`getConcLevel: ${pollutant}Data field not found.`)
+        return -1;
+    }
     
     let level = -1;
-    misebigAqiSpec[pollutant].map ( (limit, i) => {
+    aqiSpecs[aqiName][pollutant+'Data'].concEndPoints.map ( (limit, i) => {
         if (conc <= limit && level == -1) {
             //console.log(`>>> ${conc} < ${limit} `)
             level = i;
@@ -102,22 +115,22 @@ function getConcLevel(pollutant, conc) {
     else return level;
 }
 
-function getAqiLow(pollutant, level) {
+function getAqiLow(aqiName, pollutant, level) {
     if (level == -1) return -1;
     if (level == 0) return 0;
-    return misebigAqiSpec.indexBp[level-1] + 1;
+    return aqiSpecs[aqiName].indexBp[level-1] + 1;
 }
 
-function getAqiHigh(pollutant, level) {
+function getAqiHigh(aqiName, pollutant, level) {
     if (level == -1) return -1;
-    return misebigAqiSpec.indexBp[level]
+    return aqiSpecs[aqiName].indexBp[level]
 }
 
-function getCLow(pollutant, level) {
+function getCLow(aqiName, pollutant, level) {
     if (level == -1) return -1;
     if (level == 0) return 0;
     // level > 0
-    let lowValue = misebigAqiSpec[pollutant][level-1];
+    let lowValue = aqiSpecs[aqiName][pollutant+'Data'].concEndPoints[level-1];
     switch (pollutant) {
         case 'pm25':
             lowValue += 0.1;
@@ -134,9 +147,9 @@ function getCLow(pollutant, level) {
     return lowValue;
 }
 
-function getCHigh(pollutant, level) {
+function getCHigh(aqiName, pollutant, level) {
     if (level == -1) return -1;        
-    return misebigAqiSpec[pollutant][level];
+    return aqiSpecs[aqiName][pollutant+'Data'].concEndPoints[level];
 }
 
 

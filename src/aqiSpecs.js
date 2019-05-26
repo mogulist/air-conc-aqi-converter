@@ -3,14 +3,6 @@ export const aqiSpecs = {
         level: 6,
         color: [ 'green', 'yellow', 'orange', 'red', 'purple', 'maroon', 'grey'],
         name: ['Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous', 'Out of Bounds' ],
-        pm25: [ 12, 25.4, 55.4, 150.4, 250.4, 350.4 ],
-        //pm25: [ 12.0, 35.4, 55.4, 150.4, 250.4, 350.4 ], // US AQI
-        pm10: [ 30, 50, 150, 354, 424, 504 ],
-        //pm10: [ 54, 155, 254, 354, 424, 504 ], // US AQI
-        no2: [ 0.03, 0.06, 0.2, 0.649, 1.249, 1.649 ],
-        o3: [ 0.03, 0.09, 0.15, 0.204, 0.404, 0.504 ], // 0.604
-        so2: [ 0.02, 0.050, 0.15, 0.304, 0.604, 0.804 ], // 1.004
-        co: [ 2, 9.0, 12.4, 15.0, 30.4, 40.4 ],
         indexBp: [ 50, 100, 150, 200, 300, 400, 500 ],
         startBp: [ 0,  101, 151, 201, 301, 401,],
         pm25Data: {
@@ -128,6 +120,8 @@ export const aqiSpecs = {
             },
         },
     },
+        //pm25: [ 12.0, 35.4, 55.4, 150.4, 250.4, 350.4 ], // US AQI
+        //pm10: [ 54, 155, 254, 354, 424, 504 ], // US AQI
     us: {
         level: 7,
         color: [ 'green', 'yellow', 'orange', 'red', 'purple', 'maroon', 'grey'],
@@ -157,23 +151,3 @@ export const aqiSpecs = {
         indexBp: [ 50, 100, 150, 200, 300, 500, 2000 ]
     }
 }
-
-// O3: 8시간 평균이 1~5 단계까지, 1시간 평균은 125ppb 이상일 때 3~6단계까지 존재함
-// PM2.5와 PM10은 하루 평균
-// CO: 8시간 평균
-// SO2: 1~4단계는 1시간 평균, 5~6단계는 24시간 평균
-// NO2: 1시간 평균
-export const misebigAqiSpec = { // 미세빅 표준
-    level: 6,
-    color: [ 'green', 'yellow', 'orange', 'red', 'purple', 'maroon', 'grey'],
-    name: ['Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous', 'Out of Bounds' ],
-    pm25: [ 12, 25.4, 55.4, 150.4, 250.4, 350.4 ],
-    //pm25: [ 12.0, 35.4, 55.4, 150.4, 250.4, 350.4 ], // US AQI
-    pm10: [ 30, 50, 150, 354, 424, 504 ],
-    //pm10: [ 54, 155, 254, 354, 424, 504 ], // US AQI
-    no2: [ 0.03, 0.06, 0.2, 0.649, 1.249, 1.649 ],
-    o3: [ 0.03, 0.09, 0.15, 0.204, 0.404, 0.504 ],
-    so2: [ 0.02, 0.050, 0.15, 0.304, 0.604, 0.804 ],
-    co: [ 2, 9.0, 12.4, 15.0, 30.4, 40.4 ],
-    indexBp: [ 50, 100, 150, 200, 300, 400 ]
-};
