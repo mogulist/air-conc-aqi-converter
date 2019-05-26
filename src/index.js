@@ -29,17 +29,18 @@ export const calcImaqi = ({pm25Value, pm10Value, no2Value, o3Value, coValue, so2
 }
 
 
-
 export const concToAqi = (aqiName, pollutant, conc) => {
     let aqi;
     const level = getConcLevel(aqiName, pollutant, conc)
-    if (level == 6) {
-        aqi = concToAqiLast(aqiName, pollutant, conc)
-        return aqi;
-    } 
+    
     if (level === -1 || conc < 0) {
         return -1;
     }
+
+    if (level == aqiSpecs[aqiName].level) {
+        aqi = concToAqiLast(aqiName, pollutant, conc)
+        return aqi;
+    } 
 
     // level is 0~5
     const bpLow = getAqiLow(aqiName, pollutant, level)
@@ -48,6 +49,8 @@ export const concToAqi = (aqiName, pollutant, conc) => {
     const cHigh = getCHigh(aqiName, pollutant, level)
     
     aqi = bpLow + (conc - cLow)*(bpHigh - bpLow)/(cHigh - cLow)
+    // console.log(`concToAqi: aqi:${aqi} = bpLow:${bpLow} + (conc:${conc} - cLow:${cLow})*bpHigh:${bpHigh}-bpLow:${bpLow})/(cHigh:${cHigh}-cLow:${cLow})`)
+
     return Math.round(aqi,0);
 }
 
@@ -111,7 +114,7 @@ function getConcLevel(aqiName, pollutant, conc) {
             //return i; // return previous i as level
         }
     })
-    if (level == -1) return 6;
+    if (level == -1) return aqiSpecs[aqiName].level;
     else return level;
 }
 
