@@ -16,22 +16,22 @@ export const hello = () => {
     return 'hello w'
 }
 
-export const calcImaqi = ({pm25Value, pm10Value, no2Value, o3Value, coValue, so2Value}) => {
+export const getIaqiFromConcs = (aqiName, {pm25Value, pm10Value, no2Value, o3Value, coValue, so2Value}) => {
     let aqis = [];
-    const pm25Aqi = concToAqi(pNames.PM25, pm25Value)
-    aqis.push(concToAqi(pNames.PM25, pm25Value))
-    aqis.push(concToAqi(pNames.PM10, pm10Value))
-    aqis.push(concToAqi(pNames.NO2, no2Value))
-    aqis.push(concToAqi(pNames.O3, o3Value))
-    aqis.push(concToAqi(pNames.CO, coValue))
-    aqis.push(concToAqi(pNames.SO2, so2Value))
+    aqis.push(getConcFromAqi(aqiName, pNames.PM25, pm25Value))
+    aqis.push(getConcFromAqi(aqiName, pNames.PM10, pm10Value))
+    aqis.push(getConcFromAqi(aqiName, pNames.NO2, no2Value))
+    aqis.push(getConcFromAqi(aqiName, pNames.O3, o3Value))
+    aqis.push(getConcFromAqi(aqiName, pNames.CO, coValue))
+    aqis.push(getConcFromAqi(aqiName, pNames.SO2, so2Value))
+
     return _.max(aqis)
 }
 
 
-export const concToAqi = (aqiName, pollutant, conc) => {
+export const getConcFromAqi = (aqiName, pollutant, conc) => {
     let aqi;
-    const level = getConcLevel(aqiName, pollutant, conc)
+    const level = getLevelFromConc(aqiName, pollutant, conc)
     
     if (level === -1 || conc < 0) {
         return -1;
@@ -54,7 +54,7 @@ export const concToAqi = (aqiName, pollutant, conc) => {
     return Math.round(aqi,0);
 }
 
-function getPosInLevel (aqiName, aqi) {
+const getPosInLevel = (aqiName, aqi) => {
     const hazardousPos = d3scale.scaleLog()
                 .domain([301, 500, 2000])
                 .range([0, 0.4, 0.45])
@@ -70,7 +70,7 @@ function getPosInLevel (aqiName, aqi) {
     return pos; 
 }
 
-function getLevelByAqi(aqiName, aqiValue) {
+const getLevelByAqi = (aqiName, aqiValue) => {
     if (aqiValue > 400) return 5;
 
     let level;
@@ -82,7 +82,7 @@ function getLevelByAqi(aqiName, aqiValue) {
 
 // 각 오염원에서 AQI가 401 이상이되는 구간 계산
 // 농도가 무한히 높아지더라도 401~500 구간의 linear rate로 AQI를 계산함
-function concToAqiLast(aqiName, pollutant, conc) {
+const concToAqiLast = (aqiName, pollutant, conc) => {
     if (!aqiSpecs[aqiName]) return -1;
 
     const {slope, intercept} = aqiSpecs[aqiName][pollutant+'Data'];
@@ -94,7 +94,7 @@ function concToAqiLast(aqiName, pollutant, conc) {
 
 // 오염원의 농도가 어느 레벨인지 알려줌
 // Return: Level: 0 ~ 5/6
-function getConcLevel(aqiName, pollutant, conc) {
+export const getLevelFromConc = (aqiName, pollutant, conc) => {
     if (!isValidPollutantName(pollutant)) return -1;
     if (!aqiSpecs[aqiName]) {
         // console.error(`getConcLevel: invalid AQI name:${aqiName}`)

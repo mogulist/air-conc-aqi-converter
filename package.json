@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d dist",
-    "test": "npm run build && mocha dist/test/krAqi.test.js || true"
+    "test-iaqi": "npm run build && mocha dist/test/calcIaqi.test.js || true",
+    "test-kr": "npm run build && mocha dist/test/krAqi.test.js || true",
+    "test-all": "npm run build && mocha dist/**/*.js || true"
   },
   "author": "Herbert Lim",
   "license": "ISC",
