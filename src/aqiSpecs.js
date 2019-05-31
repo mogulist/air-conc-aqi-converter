@@ -180,7 +180,7 @@ export const aqiSpecs = {
             },
         },
         o3Data: {
-            concEndPoints: [ 0.062, 0.124, 0.164, 0.204, 0.404, 0.504 ], // 0,1 구간은 공식적으로 정해지지 않은 것. 0 구간은 1구간의 반으로 함.
+            concEndPoints: [ 0.03, 0.124, 0.164, 0.204, 0.404, 0.504 ], // 좋음 구간은 한국 기준에, 보통 구간은 AirNow Calculator로 알아냄
             concEndPoints8h: [ 0.054, 0.070, 0.085, 0.105, 0.200, -1 ],  // 참고용
             concEndPoints1h: [ -1, -1, 0.164, 0.204, 0.404, 0.504 ],     // 참고용
             lastConcStart: 0.505,

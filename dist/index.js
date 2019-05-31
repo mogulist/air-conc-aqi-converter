@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getConcFromAqi = exports.getIaqiFromConcs = exports.hello = void 0;
+exports.getLevelFromConc = exports.getConcFromAqi = exports.getIaqiFromConcs = exports.hello = void 0;
 
 var _lodash = _interopRequireDefault(require("lodash"));
 
@@ -76,7 +76,7 @@ var getConcFromAqi = function getConcFromAqi(aqiName, pollutant, conc) {
 
 exports.getConcFromAqi = getConcFromAqi;
 
-function getPosInLevel(aqiName, aqi) {
+var getPosInLevel = function getPosInLevel(aqiName, aqi) {
   var hazardousPos = _d3Scale["default"].scaleLog().domain([301, 500, 2000]).range([0, 0.4, 0.45]);
 
   if (aqi > 301) {
@@ -88,9 +88,9 @@ function getPosInLevel(aqiName, aqi) {
   var lowValue = level > 0 ? aqiSpec[aqiName].indexBp[level - 1] + 1 : 0;
   var pos = (aqi - lowValue) / (highValue - lowValue);
   return pos;
-}
+};
 
-function getLevelByAqi(aqiName, aqiValue) {
+var getLevelByAqi = function getLevelByAqi(aqiName, aqiValue) {
   if (aqiValue > 400) return 5;
   var level;
 
@@ -99,7 +99,7 @@ function getLevelByAqi(aqiName, aqiValue) {
   }
 
   return level;
-} // 각 오염원에서 AQI가 401 이상이되는 구간 계산
+}; // 각 오염원에서 AQI가 401 이상이되는 구간 계산
 // 농도가 무한히 높아지더라도 401~500 구간의 linear rate로 AQI를 계산함
 
 
@@ -139,6 +139,8 @@ var getLevelFromConc = function getLevelFromConc(aqiName, pollutant, conc) {
 
   if (level == -1) return _aqiSpecs.aqiSpecs[aqiName].level;else return level;
 };
+
+exports.getLevelFromConc = getLevelFromConc;
 
 function getAqiLow(aqiName, pollutant, level) {
   if (level == -1) return -1;
