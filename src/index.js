@@ -54,7 +54,7 @@ export const getConcFromAqi = (aqiName, pollutant, conc) => {
     return Math.round(aqi,0);
 }
 
-const getPosInLevel = (aqiName, aqi) => {
+export const getPosInLevel = (aqiName, aqi) => {
     const hazardousPos = d3scale.scaleLog()
                 .domain([301, 500, 2000])
                 .range([0, 0.4, 0.45])
@@ -70,7 +70,7 @@ const getPosInLevel = (aqiName, aqi) => {
     return pos; 
 }
 
-const getLevelByAqi = (aqiName, aqiValue) => {
+export const getLevelByAqi = (aqiName, aqiValue) => {
     if (aqiValue > 400) return 5;
 
     let level;
@@ -80,20 +80,6 @@ const getLevelByAqi = (aqiName, aqiValue) => {
     return level;
 }
 
-// 각 오염원에서 AQI가 401 이상이되는 구간 계산
-// 농도가 무한히 높아지더라도 401~500 구간의 linear rate로 AQI를 계산함
-const concToAqiLast = (aqiName, pollutant, conc) => {
-    if (!aqiSpecs[aqiName]) return -1;
-
-    const {slope, intercept} = aqiSpecs[aqiName][pollutant+'Data'];
-    const aqi = slope * conc + intercept;
-
-    if (Number(aqi)) return Math.round(aqi, 0)
-    else return -1;
-}
-
-// 오염원의 농도가 어느 레벨인지 알려줌
-// Return: Level: 0 ~ 5/6
 export const getLevelFromConc = (aqiName, pollutant, conc) => {
     if (!isValidPollutantName(pollutant)) return -1;
     if (!aqiSpecs[aqiName]) {
@@ -116,6 +102,19 @@ export const getLevelFromConc = (aqiName, pollutant, conc) => {
     })
     if (level == -1) return aqiSpecs[aqiName].level;
     else return level;
+}
+
+// Calculate AQI from concentration where AQI value is higher than 500
+// Official AQI value's highest limit is 500 but there are cases where AQI value is much higher the limit.
+// AQI above 501 is calculated by using the increase rate from AQI 401 to 500 of each pollutant.
+const concToAqiLast = (aqiName, pollutant, conc) => {
+    if (!aqiSpecs[aqiName]) return -1;
+
+    const {slope, intercept} = aqiSpecs[aqiName][pollutant+'Data'];
+    const aqi = slope * conc + intercept;
+
+    if (Number(aqi)) return Math.round(aqi, 0)
+    else return -1;
 }
 
 function getAqiLow(aqiName, pollutant, level) {
@@ -154,7 +153,6 @@ function getCHigh(aqiName, pollutant, level) {
     if (level == -1) return -1;        
     return aqiSpecs[aqiName][pollutant+'Data'].concEndPoints[level];
 }
-
 
 function isValidPollutantName(pollutant) {
     return _.includes(pNames, pollutant)

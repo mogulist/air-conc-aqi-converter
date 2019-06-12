@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getLevelFromConc = exports.getConcFromAqi = exports.getIaqiFromConcs = exports.hello = void 0;
+exports.getLevelFromConc = exports.getLevelByAqi = exports.getPosInLevel = exports.getConcFromAqi = exports.getIaqiFromConcs = exports.hello = void 0;
 
 var _lodash = _interopRequireDefault(require("lodash"));
 
@@ -90,6 +90,8 @@ var getPosInLevel = function getPosInLevel(aqiName, aqi) {
   return pos;
 };
 
+exports.getPosInLevel = getPosInLevel;
+
 var getLevelByAqi = function getLevelByAqi(aqiName, aqiValue) {
   if (aqiValue > 400) return 5;
   var level;
@@ -99,20 +101,9 @@ var getLevelByAqi = function getLevelByAqi(aqiName, aqiValue) {
   }
 
   return level;
-}; // 각 오염원에서 AQI가 401 이상이되는 구간 계산
-// 농도가 무한히 높아지더라도 401~500 구간의 linear rate로 AQI를 계산함
+};
 
-
-var concToAqiLast = function concToAqiLast(aqiName, pollutant, conc) {
-  if (!_aqiSpecs.aqiSpecs[aqiName]) return -1;
-  var _aqiSpecs$aqiName = _aqiSpecs.aqiSpecs[aqiName][pollutant + 'Data'],
-      slope = _aqiSpecs$aqiName.slope,
-      intercept = _aqiSpecs$aqiName.intercept;
-  var aqi = slope * conc + intercept;
-  if (Number(aqi)) return Math.round(aqi, 0);else return -1;
-}; // 오염원의 농도가 어느 레벨인지 알려줌
-// Return: Level: 0 ~ 5/6
-
+exports.getLevelByAqi = getLevelByAqi;
 
 var getLevelFromConc = function getLevelFromConc(aqiName, pollutant, conc) {
   if (!isValidPollutantName(pollutant)) return -1;
@@ -138,9 +129,21 @@ var getLevelFromConc = function getLevelFromConc(aqiName, pollutant, conc) {
   });
 
   if (level == -1) return _aqiSpecs.aqiSpecs[aqiName].level;else return level;
-};
+}; // Calculate AQI from concentration where AQI value is higher than 500
+// Official AQI value's highest limit is 500 but there are cases where AQI value is much higher the limit.
+// AQI above 501 is calculated by using the increase rate from AQI 401 to 500 of each pollutant.
+
 
 exports.getLevelFromConc = getLevelFromConc;
+
+var concToAqiLast = function concToAqiLast(aqiName, pollutant, conc) {
+  if (!_aqiSpecs.aqiSpecs[aqiName]) return -1;
+  var _aqiSpecs$aqiName = _aqiSpecs.aqiSpecs[aqiName][pollutant + 'Data'],
+      slope = _aqiSpecs$aqiName.slope,
+      intercept = _aqiSpecs$aqiName.intercept;
+  var aqi = slope * conc + intercept;
+  if (Number(aqi)) return Math.round(aqi, 0);else return -1;
+};
 
 function getAqiLow(aqiName, pollutant, level) {
   if (level == -1) return -1;

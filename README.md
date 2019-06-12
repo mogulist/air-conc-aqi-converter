@@ -5,7 +5,7 @@ Although official AQI's max value is 500, this module supports over the limit AQ
 
 ## Installation
 ```
-$npm i git+https://github.com/HerbertLim/air-conc-aqi-converter -S
+$ npm i git+https://github.com/HerbertLim/air-conc-aqi-converter -S
 ```
 ```
 import {getConcFromAqi, getIaqiFromConcs, } from 'air-conc-aqi-converter';
@@ -54,6 +54,37 @@ Returns
 Level of given AQI. In case of Misebig AQI and US AQI, which consists of 6 levels, returns integer from 0 to 6. 6 means given concentration value is over the official AQI limit. In case of KR AQI, which consists of 4 levels, returns integer from 0 to 4. 4 means the same. 
 
 -1 if any error.
+
+
+### getLevelByAqi (aqiName, aqiValue) 
+
+Parameters
+- aqiName: name of AQI type. Currently supports only three AQI types: 'misebig', 'us', 'kr'
+- aqiValue: AQI value
+
+Returns
+
+Level of given AQI. In case of Misebig AQI and US AQI, which consists of 6 levels, returns integer from 0 to 6. 6 means given concentration value is over the official AQI limit. In case of KR AQI, which consists of 4 levels, returns integer from 0 to 4. 4 means the same. 
+
+-1 if any error.
+
+
+### getPosInLevel (aqiName, aqiValue)
+
+Find position of AQI.
+
+Parameters
+- aqiName: name of AQI type. Currently supports only three AQI types: 'misebig', 'us', 'kr'
+- aqiValue: AQI value
+
+Returns
+
+Returns exact position floating point number within AQI level. 
+
+For example, if AQI value is 75, AQI level is 1, and its position is 1.5. If AQI value is 125, AQI level is 2 and its position is 2.5.
+
+-1 if any error.
+
 
 ---
 
