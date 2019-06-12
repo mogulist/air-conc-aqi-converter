@@ -8,11 +8,11 @@ Although official AQI's max value is 500, this module supports over the limit AQ
 $ npm i git+https://github.com/HerbertLim/air-conc-aqi-converter -S
 ```
 ```
-import {getConcFromAqi, getIaqiFromConcs, } from 'air-conc-aqi-converter';
+import {getAqiFromConc, getIaqiFromConcs, } from 'air-conc-aqi-converter';
 ```
 
 ## APIs
-### getConcFromAqi (aqiName, pollutant, conc)
+### getAqiFromConc (aqiName, pollutant, conc)
 
 Parameters
 - aqiName: name of AQI type. Currently supports only three AQI types: 'misebig', 'us', 'kr'

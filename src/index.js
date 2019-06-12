@@ -18,18 +18,18 @@ export const hello = () => {
 
 export const getIaqiFromConcs = (aqiName, {pm25Value, pm10Value, no2Value, o3Value, coValue, so2Value}) => {
     let aqis = [];
-    aqis.push(getConcFromAqi(aqiName, pNames.PM25, pm25Value))
-    aqis.push(getConcFromAqi(aqiName, pNames.PM10, pm10Value))
-    aqis.push(getConcFromAqi(aqiName, pNames.NO2, no2Value))
-    aqis.push(getConcFromAqi(aqiName, pNames.O3, o3Value))
-    aqis.push(getConcFromAqi(aqiName, pNames.CO, coValue))
-    aqis.push(getConcFromAqi(aqiName, pNames.SO2, so2Value))
+    aqis.push(getAqiFromConc(aqiName, pNames.PM25, pm25Value))
+    aqis.push(getAqiFromConc(aqiName, pNames.PM10, pm10Value))
+    aqis.push(getAqiFromConc(aqiName, pNames.NO2, no2Value))
+    aqis.push(getAqiFromConc(aqiName, pNames.O3, o3Value))
+    aqis.push(getAqiFromConc(aqiName, pNames.CO, coValue))
+    aqis.push(getAqiFromConc(aqiName, pNames.SO2, so2Value))
 
     return _.max(aqis)
 }
 
 
-export const getConcFromAqi = (aqiName, pollutant, conc) => {
+export const getAqiFromConc = (aqiName, pollutant, conc) => {
     let aqi;
     const level = getLevelFromConc(aqiName, pollutant, conc)
     
@@ -64,8 +64,8 @@ export const getPosInLevel = (aqiName, aqi) => {
     }
 
     const level = getLevelByAqi(aqi)
-    const highValue = aqiSpec[aqiName].indexBp[level];
-    const lowValue = level > 0 ? aqiSpec[aqiName].indexBp[level-1] + 1 : 0;
+    const highValue = aqiSpecs[aqiName].indexBp[level];
+    const lowValue = level > 0 ? aqiSpecs[aqiName].indexBp[level-1] + 1 : 0;
     const pos = (aqi - lowValue)/(highValue - lowValue)
     return pos; 
 }
@@ -74,8 +74,8 @@ export const getLevelByAqi = (aqiName, aqiValue) => {
     if (aqiValue > 400) return 5;
 
     let level;
-    for (level = 0; level < aqiSpec[aqiName].level; level++) {
-        if (aqiValue <= aqiSpec[aqiName].indexBp[level]) break;
+    for (level = 0; level < aqiSpecs[aqiName].level; level++) {
+        if (aqiValue <= aqiSpecs[aqiName].indexBp[level]) break;
     }
     return level;
 }

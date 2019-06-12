@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getLevelFromConc = exports.getLevelByAqi = exports.getPosInLevel = exports.getConcFromAqi = exports.getIaqiFromConcs = exports.hello = void 0;
+exports.getLevelFromConc = exports.getLevelByAqi = exports.getPosInLevel = exports.getAqiFromConc = exports.getIaqiFromConcs = exports.hello = void 0;
 
 var _lodash = _interopRequireDefault(require("lodash"));
 
@@ -40,18 +40,18 @@ var getIaqiFromConcs = function getIaqiFromConcs(aqiName, _ref) {
       coValue = _ref.coValue,
       so2Value = _ref.so2Value;
   var aqis = [];
-  aqis.push(getConcFromAqi(aqiName, pNames.PM25, pm25Value));
-  aqis.push(getConcFromAqi(aqiName, pNames.PM10, pm10Value));
-  aqis.push(getConcFromAqi(aqiName, pNames.NO2, no2Value));
-  aqis.push(getConcFromAqi(aqiName, pNames.O3, o3Value));
-  aqis.push(getConcFromAqi(aqiName, pNames.CO, coValue));
-  aqis.push(getConcFromAqi(aqiName, pNames.SO2, so2Value));
+  aqis.push(getAqiFromConc(aqiName, pNames.PM25, pm25Value));
+  aqis.push(getAqiFromConc(aqiName, pNames.PM10, pm10Value));
+  aqis.push(getAqiFromConc(aqiName, pNames.NO2, no2Value));
+  aqis.push(getAqiFromConc(aqiName, pNames.O3, o3Value));
+  aqis.push(getAqiFromConc(aqiName, pNames.CO, coValue));
+  aqis.push(getAqiFromConc(aqiName, pNames.SO2, so2Value));
   return _lodash["default"].max(aqis);
 };
 
 exports.getIaqiFromConcs = getIaqiFromConcs;
 
-var getConcFromAqi = function getConcFromAqi(aqiName, pollutant, conc) {
+var getAqiFromConc = function getAqiFromConc(aqiName, pollutant, conc) {
   var aqi;
   var level = getLevelFromConc(aqiName, pollutant, conc);
 
@@ -74,7 +74,7 @@ var getConcFromAqi = function getConcFromAqi(aqiName, pollutant, conc) {
   return Math.round(aqi, 0);
 };
 
-exports.getConcFromAqi = getConcFromAqi;
+exports.getAqiFromConc = getAqiFromConc;
 
 var getPosInLevel = function getPosInLevel(aqiName, aqi) {
   var hazardousPos = _d3Scale["default"].scaleLog().domain([301, 500, 2000]).range([0, 0.4, 0.45]);
@@ -84,8 +84,8 @@ var getPosInLevel = function getPosInLevel(aqiName, aqi) {
   }
 
   var level = getLevelByAqi(aqi);
-  var highValue = aqiSpec[aqiName].indexBp[level];
-  var lowValue = level > 0 ? aqiSpec[aqiName].indexBp[level - 1] + 1 : 0;
+  var highValue = _aqiSpecs.aqiSpecs[aqiName].indexBp[level];
+  var lowValue = level > 0 ? _aqiSpecs.aqiSpecs[aqiName].indexBp[level - 1] + 1 : 0;
   var pos = (aqi - lowValue) / (highValue - lowValue);
   return pos;
 };
@@ -96,8 +96,8 @@ var getLevelByAqi = function getLevelByAqi(aqiName, aqiValue) {
   if (aqiValue > 400) return 5;
   var level;
 
-  for (level = 0; level < aqiSpec[aqiName].level; level++) {
-    if (aqiValue <= aqiSpec[aqiName].indexBp[level]) break;
+  for (level = 0; level < _aqiSpecs.aqiSpecs[aqiName].level; level++) {
+    if (aqiValue <= _aqiSpecs.aqiSpecs[aqiName].indexBp[level]) break;
   }
 
   return level;
