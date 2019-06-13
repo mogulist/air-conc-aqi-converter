@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import d3scale from 'd3-scale';
+//import d3 from 'd3-scale'; // doesn't work Jun 13, 2019.
+const d3Scale = require('d3-scale')
 
 import {aqiSpecs} from './aqiSpecs';
 
@@ -55,28 +56,41 @@ export const getAqiFromConc = (aqiName, pollutant, conc) => {
 }
 
 export const getPosInLevel = (aqiName, aqi) => {
-    const hazardousPos = d3scale.scaleLog()
-                .domain([301, 500, 2000])
-                .range([0, 0.4, 0.45])
-
-    if (aqi > 301) {
-        return hazardousPos(aqi)
+    if (aqiName === 'kr' && aqi > 150) {
+        const hazardousPos = d3Scale.scaleLog()
+                    .domain([151, 500, 2000])
+                    .range([0.02, 0.5, 0.6])
+        
+        return _.round(hazardousPos(aqi),2)
+    }
+    
+    if (aqi > 300) { // 'misebig', 'us'
+        const hazardousPos = d3Scale.scaleLog()
+                    .domain([301, 500, 2000])
+                    .range([0.02, 0.4, 0.45])
+        return _.round(hazardousPos(aqi),2)
     }
 
-    const level = getLevelByAqi(aqi)
+    const level = getLevelByAqi(aqiName, aqi)
     const highValue = aqiSpecs[aqiName].indexBp[level];
     const lowValue = level > 0 ? aqiSpecs[aqiName].indexBp[level-1] + 1 : 0;
     const pos = (aqi - lowValue)/(highValue - lowValue)
-    return pos; 
+
+    const generalPos = d3Scale.scaleLinear().domain([lowValue,highValue]).range([0.05, 0.95])
+    const newPos = _.round(generalPos(aqi),2)
+
+    return newPos; 
 }
 
 export const getLevelByAqi = (aqiName, aqiValue) => {
+    if (aqiName === 'kr' && aqiValue > 150) return 3;
     if (aqiValue > 400) return 5;
 
     let level;
     for (level = 0; level < aqiSpecs[aqiName].level; level++) {
         if (aqiValue <= aqiSpecs[aqiName].indexBp[level]) break;
     }
+    
     return level;
 }
 

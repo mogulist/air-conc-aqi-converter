@@ -7,11 +7,12 @@ exports.getLevelFromConc = exports.getLevelByAqi = exports.getPosInLevel = expor
 
 var _lodash = _interopRequireDefault(require("lodash"));
 
-var _d3Scale = _interopRequireDefault(require("d3-scale"));
-
 var _aqiSpecs = require("./aqiSpecs");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+//import d3 from 'd3-scale'; // doesn't work Jun 13, 2019.
+var d3Scale = require('d3-scale');
 
 var pNames = {
   PM25: 'pm25',
@@ -77,22 +78,33 @@ var getAqiFromConc = function getAqiFromConc(aqiName, pollutant, conc) {
 exports.getAqiFromConc = getAqiFromConc;
 
 var getPosInLevel = function getPosInLevel(aqiName, aqi) {
-  var hazardousPos = _d3Scale["default"].scaleLog().domain([301, 500, 2000]).range([0, 0.4, 0.45]);
-
-  if (aqi > 301) {
-    return hazardousPos(aqi);
+  if (aqiName === 'kr' && aqi > 150) {
+    var hazardousPos = d3Scale.scaleLog().domain([151, 500, 2000]).range([0.02, 0.5, 0.6]);
+    return _lodash["default"].round(hazardousPos(aqi), 2);
   }
 
-  var level = getLevelByAqi(aqi);
+  if (aqi > 300) {
+    // 'misebig', 'us'
+    var _hazardousPos = d3Scale.scaleLog().domain([301, 500, 2000]).range([0.02, 0.4, 0.45]);
+
+    return _lodash["default"].round(_hazardousPos(aqi), 2);
+  }
+
+  var level = getLevelByAqi(aqiName, aqi);
   var highValue = _aqiSpecs.aqiSpecs[aqiName].indexBp[level];
   var lowValue = level > 0 ? _aqiSpecs.aqiSpecs[aqiName].indexBp[level - 1] + 1 : 0;
   var pos = (aqi - lowValue) / (highValue - lowValue);
-  return pos;
+  var generalPos = d3Scale.scaleLinear().domain([lowValue, highValue]).range([0.05, 0.95]);
+
+  var newPos = _lodash["default"].round(generalPos(aqi), 2);
+
+  return newPos;
 };
 
 exports.getPosInLevel = getPosInLevel;
 
 var getLevelByAqi = function getLevelByAqi(aqiName, aqiValue) {
+  if (aqiName === 'kr' && aqiValue > 150) return 3;
   if (aqiValue > 400) return 5;
   var level;
 
