@@ -15,15 +15,15 @@
   "author": "Herbert Lim",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/node": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/node": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
     "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.2.2"
   },
   "dependencies": {
-    "d3-scale": "^3.0.0",
-    "lodash": "^4.17.11"
+    "d3-scale": "^3.2.1",
+    "lodash": "^4.17.15"
   }
 }

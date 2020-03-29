@@ -284,3 +284,102 @@ describe(`대표 AQI 계산 F: 낮은 농도일 때`, () => {
         assert.equal(getIaqiFromConcs('kr', aqiValues), 58)
     })
 })
+
+describe(`대표 AQI 계산 G: 일부 값이 없거나 공백일 때`, () => {
+    const aqiValues = {
+        pm25Value: 16,
+        pm10Value: 33,
+        no2Value: 0.01,
+        o3Value: 0.04,
+        so2Value: '',
+        coValue: undefined,
+    }
+    it(`misebig AQI의 IAQI는 65 이다.`, () => {
+        // console.log(aqiValues)
+        const aqiName = 'misebig'
+        const aqis = [];
+        aqis.push(getAqiFromConc(aqiName,'pm25',aqiValues.pm25Value))
+        aqis.push(getAqiFromConc(aqiName,'pm10',aqiValues.pm10Value))
+        aqis.push(getAqiFromConc(aqiName,'no2',aqiValues.no2Value))
+        aqis.push(getAqiFromConc(aqiName,'o3',aqiValues.o3Value))
+        aqis.push(getAqiFromConc(aqiName,'so2',aqiValues.so2Value))
+        aqis.push(getAqiFromConc(aqiName,'co',aqiValues.coValue))
+        // console.log(aqis)
+
+        assert.equal(getIaqiFromConcs('misebig', aqiValues), 65)
+    })
+    it(`US AQI의 IAQI는 59 이다.`, () => {
+        const aqiName = 'us'
+        const aqis = [];
+        aqis.push(getAqiFromConc(aqiName,'pm25',aqiValues.pm25Value))
+        aqis.push(getAqiFromConc(aqiName,'pm10',aqiValues.pm10Value))
+        aqis.push(getAqiFromConc(aqiName,'no2',aqiValues.no2Value))
+        aqis.push(getAqiFromConc(aqiName,'o3',aqiValues.o3Value))
+        aqis.push(getAqiFromConc(aqiName,'so2',aqiValues.so2Value))
+        aqis.push(getAqiFromConc(aqiName,'co',aqiValues.coValue))
+        // console.log(aqis)
+
+        assert.equal(getIaqiFromConcs('us', aqiValues), 59)
+    })
+    it(`KR AQI의 IAQI는 58 이다.`, () => {
+        const aqiName = 'kr'
+        const aqis = [];
+        aqis.push(getAqiFromConc(aqiName,'pm25',aqiValues.pm25Value))
+        aqis.push(getAqiFromConc(aqiName,'pm10',aqiValues.pm10Value))
+        aqis.push(getAqiFromConc(aqiName,'no2',aqiValues.no2Value))
+        aqis.push(getAqiFromConc(aqiName,'o3',aqiValues.o3Value))
+        aqis.push(getAqiFromConc(aqiName,'so2',aqiValues.so2Value))
+        aqis.push(getAqiFromConc(aqiName,'co',aqiValues.coValue))
+        // console.log(aqis)
+
+        assert.equal(getIaqiFromConcs('kr', aqiValues), 58)
+    })
+})
+
+describe(`대표 AQI 계산 G: 일부 항목이 없는 경우`, () => {
+    const aqiValues = {
+        pm25Value: 16,
+        pm10Value: 33,
+        no2Value: 0.01,
+    }
+    it(`misebig AQI의 IAQI는 65 이다.`, () => {
+        // console.log(aqiValues)
+        const aqiName = 'misebig'
+        const aqis = [];
+        aqis.push(getAqiFromConc(aqiName,'pm25',aqiValues.pm25Value))
+        aqis.push(getAqiFromConc(aqiName,'pm10',aqiValues.pm10Value))
+        aqis.push(getAqiFromConc(aqiName,'no2',aqiValues.no2Value))
+        aqis.push(getAqiFromConc(aqiName,'o3',aqiValues.o3Value))
+        aqis.push(getAqiFromConc(aqiName,'so2',aqiValues.so2Value))
+        aqis.push(getAqiFromConc(aqiName,'co',aqiValues.coValue))
+        console.log(aqis)
+
+        assert.equal(getIaqiFromConcs('misebig', aqiValues), 65)
+    })
+    it(`US AQI의 IAQI는 59 이다.`, () => {
+        const aqiName = 'us'
+        const aqis = [];
+        aqis.push(getAqiFromConc(aqiName,'pm25',aqiValues.pm25Value))
+        aqis.push(getAqiFromConc(aqiName,'pm10',aqiValues.pm10Value))
+        aqis.push(getAqiFromConc(aqiName,'no2',aqiValues.no2Value))
+        aqis.push(getAqiFromConc(aqiName,'o3',aqiValues.o3Value))
+        aqis.push(getAqiFromConc(aqiName,'so2',aqiValues.so2Value))
+        aqis.push(getAqiFromConc(aqiName,'co',aqiValues.coValue))
+        console.log(aqis)
+
+        assert.equal(getIaqiFromConcs('us', aqiValues), 59)
+    })
+    it(`KR AQI의 IAQI는 53 이다.`, () => {
+        const aqiName = 'kr'
+        const aqis = [];
+        aqis.push(getAqiFromConc(aqiName,'pm25',aqiValues.pm25Value))
+        aqis.push(getAqiFromConc(aqiName,'pm10',aqiValues.pm10Value))
+        aqis.push(getAqiFromConc(aqiName,'no2',aqiValues.no2Value))
+        aqis.push(getAqiFromConc(aqiName,'o3',aqiValues.o3Value))
+        aqis.push(getAqiFromConc(aqiName,'so2',aqiValues.so2Value))
+        aqis.push(getAqiFromConc(aqiName,'co',aqiValues.coValue))
+        console.log(aqis)
+
+        assert.equal(getIaqiFromConcs('kr', aqiValues), 53)
+    })
+})

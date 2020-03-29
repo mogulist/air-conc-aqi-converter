@@ -31,13 +31,15 @@ export const getIaqiFromConcs = (aqiName, {pm25Value, pm10Value, no2Value, o3Val
 
 
 export const getAqiFromConc = (aqiName, pollutant, conc) => {
-    let aqi;
+    //if (conc == '' || conc == null ) return -1;
+
     const level = getLevelFromConc(aqiName, pollutant, conc)
     
     if (level === -1 || conc < 0) {
         return -1;
     }
-
+    
+    let aqi;
     if (level == aqiSpecs[aqiName].level) {
         aqi = concToAqiLast(aqiName, pollutant, conc)
         return aqi;

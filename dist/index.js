@@ -53,12 +53,14 @@ var getIaqiFromConcs = function getIaqiFromConcs(aqiName, _ref) {
 exports.getIaqiFromConcs = getIaqiFromConcs;
 
 var getAqiFromConc = function getAqiFromConc(aqiName, pollutant, conc) {
-  var aqi;
+  //if (conc == '' || conc == null ) return -1;
   var level = getLevelFromConc(aqiName, pollutant, conc);
 
   if (level === -1 || conc < 0) {
     return -1;
   }
+
+  var aqi;
 
   if (level == _aqiSpecs.aqiSpecs[aqiName].level) {
     aqi = concToAqiLast(aqiName, pollutant, conc);

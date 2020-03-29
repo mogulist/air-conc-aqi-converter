@@ -13,9 +13,9 @@ describe("\uB300\uD45C AQI \uACC4\uC0B0 A", function () {
     no2Value: 0.51,
     o3Value: 0.042,
     so2Value: 0.032,
-    coValue: 0.8 //// console.log(aqiValues)
+    coValue: 0.8
+  }; //// console.log(aqiValues)
 
-  };
   it("misebig AQI\uC758 IAQI\uB294 185 \uC774\uB2E4.", function () {
     _chai.assert.equal((0, _index.getIaqiFromConcs)('misebig', aqiValues), 185);
   });
@@ -33,9 +33,9 @@ describe("\uB300\uD45C AQI \uACC4\uC0B0 B", function () {
     no2Value: 0.51,
     o3Value: 0.092,
     so2Value: 0.032,
-    coValue: 0.8 //// console.log(aqiValues)
+    coValue: 0.8
+  }; //// console.log(aqiValues)
 
-  };
   it("misebig AQI\uC758 IAQI\uB294 200 \uC774\uB2E4.", function () {
     var aqiName = 'misebig';
     var aqis = [];
@@ -259,5 +259,99 @@ describe("\uB300\uD45C AQI \uACC4\uC0B0 F: \uB0AE\uC740 \uB18D\uB3C4\uC77C \uB54
     aqis.push((0, _index.getAqiFromConc)(aqiName, 'co', aqiValues.coValue)); // console.log(aqis)
 
     _chai.assert.equal((0, _index.getIaqiFromConcs)('kr', aqiValues), 58);
+  });
+});
+describe("\uB300\uD45C AQI \uACC4\uC0B0 G: \uC77C\uBD80 \uAC12\uC774 \uC5C6\uAC70\uB098 \uACF5\uBC31\uC77C \uB54C", function () {
+  var aqiValues = {
+    pm25Value: 16,
+    pm10Value: 33,
+    no2Value: 0.01,
+    o3Value: 0.04,
+    so2Value: '',
+    coValue: undefined
+  };
+  it("misebig AQI\uC758 IAQI\uB294 65 \uC774\uB2E4.", function () {
+    // console.log(aqiValues)
+    var aqiName = 'misebig';
+    var aqis = [];
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm25', aqiValues.pm25Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm10', aqiValues.pm10Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'no2', aqiValues.no2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'o3', aqiValues.o3Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'so2', aqiValues.so2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'co', aqiValues.coValue)); // console.log(aqis)
+
+    _chai.assert.equal((0, _index.getIaqiFromConcs)('misebig', aqiValues), 65);
+  });
+  it("US AQI\uC758 IAQI\uB294 59 \uC774\uB2E4.", function () {
+    var aqiName = 'us';
+    var aqis = [];
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm25', aqiValues.pm25Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm10', aqiValues.pm10Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'no2', aqiValues.no2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'o3', aqiValues.o3Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'so2', aqiValues.so2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'co', aqiValues.coValue)); // console.log(aqis)
+
+    _chai.assert.equal((0, _index.getIaqiFromConcs)('us', aqiValues), 59);
+  });
+  it("KR AQI\uC758 IAQI\uB294 58 \uC774\uB2E4.", function () {
+    var aqiName = 'kr';
+    var aqis = [];
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm25', aqiValues.pm25Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm10', aqiValues.pm10Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'no2', aqiValues.no2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'o3', aqiValues.o3Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'so2', aqiValues.so2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'co', aqiValues.coValue)); // console.log(aqis)
+
+    _chai.assert.equal((0, _index.getIaqiFromConcs)('kr', aqiValues), 58);
+  });
+});
+describe("\uB300\uD45C AQI \uACC4\uC0B0 G: \uC77C\uBD80 \uD56D\uBAA9\uC774 \uC5C6\uB294 \uACBD\uC6B0", function () {
+  var aqiValues = {
+    pm25Value: 16,
+    pm10Value: 33,
+    no2Value: 0.01
+  };
+  it("misebig AQI\uC758 IAQI\uB294 65 \uC774\uB2E4.", function () {
+    // console.log(aqiValues)
+    var aqiName = 'misebig';
+    var aqis = [];
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm25', aqiValues.pm25Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm10', aqiValues.pm10Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'no2', aqiValues.no2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'o3', aqiValues.o3Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'so2', aqiValues.so2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'co', aqiValues.coValue));
+    console.log(aqis);
+
+    _chai.assert.equal((0, _index.getIaqiFromConcs)('misebig', aqiValues), 65);
+  });
+  it("US AQI\uC758 IAQI\uB294 59 \uC774\uB2E4.", function () {
+    var aqiName = 'us';
+    var aqis = [];
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm25', aqiValues.pm25Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm10', aqiValues.pm10Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'no2', aqiValues.no2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'o3', aqiValues.o3Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'so2', aqiValues.so2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'co', aqiValues.coValue));
+    console.log(aqis);
+
+    _chai.assert.equal((0, _index.getIaqiFromConcs)('us', aqiValues), 59);
+  });
+  it("KR AQI\uC758 IAQI\uB294 53 \uC774\uB2E4.", function () {
+    var aqiName = 'kr';
+    var aqis = [];
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm25', aqiValues.pm25Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'pm10', aqiValues.pm10Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'no2', aqiValues.no2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'o3', aqiValues.o3Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'so2', aqiValues.so2Value));
+    aqis.push((0, _index.getAqiFromConc)(aqiName, 'co', aqiValues.coValue));
+    console.log(aqis);
+
+    _chai.assert.equal((0, _index.getIaqiFromConcs)('kr', aqiValues), 53);
   });
 });
