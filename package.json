@@ -10,6 +10,7 @@
     "test-kr": "npm run build && mocha dist/test/krAqi.test.js || true",
     "test-level": "npm run build && mocha dist/test/getLevelByAqi.test.js || true",
     "test-pos": "npm run build && mocha dist/test/posInLevel.test.js || true",
+    "test-bp": "npm run build && mocha dist/test/getAqiBreakpoints.test.js || true",
     "test-all": "npm run build && mocha dist/**/*.js || true"
   },
   "author": "Herbert Lim",

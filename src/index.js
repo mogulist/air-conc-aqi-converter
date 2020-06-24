@@ -120,6 +120,15 @@ export const getLevelFromConc = (aqiName, pollutant, conc) => {
     else return level;
 }
 
+export const getAqiBreakpoint = (aqiName, pollutant, level) => {
+    if (!isValidPollutantName(pollutant) ||
+        !aqiSpecs[aqiName] ||
+        level >= aqiSpecs[aqiName].level ) 
+        return -1;
+
+    return aqiSpecs[aqiName][pollutant+'Data'].concEndPoints[level];
+}
+
 // Calculate AQI from concentration where AQI value is higher than 500
 // Official AQI value's highest limit is 500 but there are cases where AQI value is much higher the limit.
 // AQI above 501 is calculated by using the increase rate from AQI 401 to 500 of each pollutant.

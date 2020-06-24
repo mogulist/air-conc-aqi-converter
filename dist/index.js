@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getLevelFromConc = exports.getLevelByAqi = exports.getPosInLevel = exports.getAqiFromConc = exports.getIaqiFromConcs = exports.hello = void 0;
+exports.getAqiBreakpoint = exports.getLevelFromConc = exports.getLevelByAqi = exports.getPosInLevel = exports.getAqiFromConc = exports.getIaqiFromConcs = exports.hello = void 0;
 
 var _lodash = _interopRequireDefault(require("lodash"));
 
@@ -143,12 +143,19 @@ var getLevelFromConc = function getLevelFromConc(aqiName, pollutant, conc) {
   });
 
   if (level == -1) return _aqiSpecs.aqiSpecs[aqiName].level;else return level;
+};
+
+exports.getLevelFromConc = getLevelFromConc;
+
+var getAqiBreakpoint = function getAqiBreakpoint(aqiName, pollutant, level) {
+  if (!isValidPollutantName(pollutant) || !_aqiSpecs.aqiSpecs[aqiName] || level >= _aqiSpecs.aqiSpecs[aqiName].level) return -1;
+  return _aqiSpecs.aqiSpecs[aqiName][pollutant + 'Data'].concEndPoints[level];
 }; // Calculate AQI from concentration where AQI value is higher than 500
 // Official AQI value's highest limit is 500 but there are cases where AQI value is much higher the limit.
 // AQI above 501 is calculated by using the increase rate from AQI 401 to 500 of each pollutant.
 
 
-exports.getLevelFromConc = getLevelFromConc;
+exports.getAqiBreakpoint = getAqiBreakpoint;
 
 var concToAqiLast = function concToAqiLast(aqiName, pollutant, conc) {
   if (!_aqiSpecs.aqiSpecs[aqiName]) return -1;

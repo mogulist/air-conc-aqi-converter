@@ -85,6 +85,21 @@ For example, if AQI value is 75, AQI level is 1, and its position is 1.5. If AQI
 
 -1 if any error.
 
+### getAqiBreakpoint (aqiName, pollutant, level)
+Find breakpoint of pollutant's AQI level
+
+Parameters
+- aqiName: name of AQI type. Currently supports only three AQI types: 'misebig', 'us', 'kr'
+- pollutant: 'pm25', 'pm10', 'no2', 'o3', 'so2', 'co'
+- level: starting from 0 to 3 or 5 depending on AQI. Korean AQI has only 4 levels(or grades) whereas Misebig(Airy) and US AQI has 6 levels.
+
+Returns
+
+Returns upper breakpoint in concentration.
+
+For example, if AQI is `misebig`, pollutant is `pm25`, and level is 2, this function will return 55, because level 2 of PM2.5 in Misebig(Airy) AQI ranges from 26 to 55.
+
+-1 if any error.
 
 ---
 
