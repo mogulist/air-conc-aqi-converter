@@ -132,6 +132,7 @@ var getLevelFromConc = function getLevelFromConc(aqiName, pollutant, conc) {
     return -1;
   }
 
+  if (isNaN(conc)) return -1;
   var level = -1;
 
   _aqiSpecs.aqiSpecs[aqiName][pollutant + 'Data'].concEndPoints.map(function (limit, i) {

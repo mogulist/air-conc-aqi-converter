@@ -106,6 +106,7 @@ export const getLevelFromConc = (aqiName, pollutant, conc) => {
         // console.error(`getConcLevel: ${pollutant}Data field not found.`)
         return -1;
     }
+    if (isNaN(conc)) return -1;
     
     let level = -1;
     aqiSpecs[aqiName][pollutant+'Data'].concEndPoints.map ( (limit, i) => {
