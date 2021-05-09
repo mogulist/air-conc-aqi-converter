@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "d3-scale": "^3.2.3",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   }
 }
